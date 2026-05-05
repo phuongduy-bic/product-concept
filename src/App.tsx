@@ -19,26 +19,11 @@ import {
 import { MOCK_LEGACY_CONCEPT } from './mockConcept'
 import './App.css'
 
-type DepthOption = 'quick' | 'deep' | 'complete'
-type LevelOption = 'scratch' | 'basics' | 'doing'
-
-const DEPTH_LABEL: Record<DepthOption, string> = {
-  quick: 'A quick walkthrough — essentials in under 30 minutes',
-  deep: 'A deep dive — structured session in 1-3 hours',
-  complete: 'A complete system — full workshop over multiple sessions',
-}
-
-const LEVEL_LABEL: Record<LevelOption, string> = {
-  scratch: 'Starting from scratch — new to this, needs fundamentals',
-  basics: 'Knows the basics — needs more depth',
-  doing: 'Already doing it — wants advanced strategies',
-}
-
 const PROCESSING_MESSAGES = [
-  'Analyzing your expertise area...',
-  'Mapping audience questions to product structure...',
-  'Selecting the best format...',
-  'Building your product concept...',
+  'Reading your idea...',
+  'Spotting what is still unclear...',
+  'Drafting clarifying questions...',
+  'Almost ready — bringing the questions to you...',
 ]
 
 function App() {
@@ -46,13 +31,6 @@ function App() {
 
   const [expertise, setExpertise] = useState('Instagram growth for small businesses')
   const [contentLink, setContentLink] = useState('')
-  const [questions, setQuestions] = useState<string[]>([
-    'How do I set up my Instagram for business?',
-    'What should I post to get followers?',
-    'How do people find me on Instagram?',
-  ])
-  const [depth, setDepth] = useState<DepthOption>('deep')
-  const [level, setLevel] = useState<LevelOption>('scratch')
 
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [concept, setConcept] = useState<Concept | null>(null)
@@ -61,21 +39,6 @@ function App() {
   function navigateToPage(n: number) {
     setPage(n)
     window.scrollTo(0, 0)
-  }
-
-  function addQuestion() {
-    setQuestions((qs) => [...qs, ''])
-  }
-
-  function updateQuestion(i: number, v: string) {
-    setQuestions((qs) => qs.map((q, idx) => (idx === i ? v : q)))
-  }
-
-  function startOver() {
-    setPage(1)
-    setSessionId(null)
-    setConcept(null)
-    setError(null)
   }
 
   function skipToResult() {
@@ -100,34 +63,6 @@ function App() {
           contentLink={contentLink}
           setContentLink={setContentLink}
           onBack={() => navigateToPage(1)}
-          onNext={() => navigateToPage(3)}
-        />
-      )}
-
-      {page === 3 && (
-        <Page3
-          questions={questions}
-          updateQuestion={updateQuestion}
-          addQuestion={addQuestion}
-          onBack={() => navigateToPage(2)}
-          onNext={() => navigateToPage(4)}
-        />
-      )}
-
-      {page === 4 && (
-        <Page4
-          depth={depth}
-          setDepth={setDepth}
-          onBack={() => navigateToPage(3)}
-          onNext={() => navigateToPage(5)}
-        />
-      )}
-
-      {page === 5 && (
-        <Page5
-          level={level}
-          setLevel={setLevel}
-          onBack={() => navigateToPage(4)}
           onNext={() => navigateToPage(6)}
         />
       )}
@@ -136,9 +71,6 @@ function App() {
         <Page6Workflow
           expertise={expertise}
           contentLink={contentLink}
-          questions={questions}
-          depth={depth}
-          level={level}
           onComplete={(sid, c) => {
             setSessionId(sid)
             setConcept(c)
@@ -146,7 +78,7 @@ function App() {
           }}
           onAbort={(msg) => {
             if (msg) setError(msg)
-            navigateToPage(5)
+            navigateToPage(2)
           }}
         />
       )}
@@ -156,8 +88,12 @@ function App() {
           sessionId={sessionId}
           concept={concept}
           onConceptChange={setConcept}
-          onStartOver={startOver}
+          onSeeFullCourse={() => navigateToPage(8)}
         />
+      )}
+
+      {page === 8 && (
+        <Page8FullCourse onBack={() => navigateToPage(7)} />
       )}
 
       {page !== 6 && error && (
@@ -191,7 +127,7 @@ function Page1({
               Turn your expertise into a product plan
             </h1>
             <p className="paragraph-lg mb-8">
-              Answer 4 questions. Get a product concept you can build today.
+              Answer a few questions. Get a product concept you can build today.
             </p>
 
             <div
@@ -265,7 +201,6 @@ function Page2({
     <section className="page">
       <div className="page-container">
         <div className="content-card">
-          <div className="step-indicator mb-6">Step 1 of 4</div>
           <h2 className="heading-2 mb-6">What do you help people with?</h2>
 
           <div className="form-field mb-6">
@@ -309,216 +244,6 @@ function Page2({
   )
 }
 
-/* ===== Page 3: Audience signals ===== */
-function Page3({
-  questions,
-  updateQuestion,
-  addQuestion,
-  onBack,
-  onNext,
-}: {
-  questions: string[]
-  updateQuestion: (i: number, v: string) => void
-  addQuestion: () => void
-  onBack: () => void
-  onNext: () => void
-}) {
-  return (
-    <section className="page">
-      <div className="page-container">
-        <div className="content-card">
-          <div className="step-indicator mb-6">Step 2 of 4</div>
-          <h2 className="heading-2 mb-6">What do people ask you most?</h2>
-
-          <div className="space-y-4 mb-6">
-            {questions.map((q, i) => (
-              <div className="form-field" key={i}>
-                <label className="paragraph-small-semibold mb-2 block text-slate-700">
-                  Question {i + 1}
-                </label>
-                <input
-                  type="text"
-                  className="text-input"
-                  placeholder={
-                    i === 0
-                      ? 'What question comes up most often?'
-                      : i === 1
-                        ? 'What else do they struggle with?'
-                        : 'Another common question?'
-                  }
-                  value={q}
-                  onChange={(e) => updateQuestion(i, e.target.value)}
-                />
-              </div>
-            ))}
-          </div>
-
-          <button className="btn-ghost mb-8" onClick={addQuestion}>
-            + Add more
-          </button>
-
-          <p className="paragraph-small text-slate-600 mb-8">
-            These questions help us understand what your audience needs most.
-          </p>
-
-          <div className="button-group">
-            <button onClick={onBack} className="btn-ghost">
-              Back
-            </button>
-            <button onClick={onNext} className="btn-primary">
-              Next
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ===== Page 4: Depth ===== */
-function Page4({
-  depth,
-  setDepth,
-  onBack,
-  onNext,
-}: {
-  depth: DepthOption
-  setDepth: (d: DepthOption) => void
-  onBack: () => void
-  onNext: () => void
-}) {
-  const options: Array<{
-    id: DepthOption
-    title: string
-    desc: string
-  }> = [
-    {
-      id: 'quick',
-      title: 'A quick walkthrough',
-      desc: 'I could explain the essentials in under 30 minutes',
-    },
-    {
-      id: 'deep',
-      title: 'A deep dive',
-      desc: 'I could teach a structured session in 1-3 hours',
-    },
-    {
-      id: 'complete',
-      title: 'A complete system',
-      desc: 'I could run a full workshop over multiple sessions',
-    },
-  ]
-
-  return (
-    <section className="page">
-      <div className="page-container">
-        <div className="content-card">
-          <div className="step-indicator mb-6">Step 3 of 4</div>
-          <h2 className="heading-2 mb-6">
-            How much could you teach someone about this?
-          </h2>
-
-          <div className="space-y-4 mb-8">
-            {options.map((o) => (
-              <div
-                key={o.id}
-                className={`selectable-card${depth === o.id ? ' selected' : ''}`}
-                onClick={() => setDepth(o.id)}
-              >
-                <div className="selectable-card-header">
-                  <span className="paragraph-semibold">{o.title}</span>
-                </div>
-                <p className="paragraph-small text-slate-600">{o.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="button-group">
-            <button onClick={onBack} className="btn-ghost">
-              Back
-            </button>
-            <button onClick={onNext} className="btn-primary">
-              Next
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ===== Page 5: Level ===== */
-function Page5({
-  level,
-  setLevel,
-  onBack,
-  onNext,
-}: {
-  level: LevelOption
-  setLevel: (l: LevelOption) => void
-  onBack: () => void
-  onNext: () => void
-}) {
-  const options: Array<{
-    id: LevelOption
-    title: string
-    desc: string
-  }> = [
-    {
-      id: 'scratch',
-      title: 'Starting from scratch',
-      desc: "They're new to this and need the fundamentals",
-    },
-    {
-      id: 'basics',
-      title: 'Know the basics',
-      desc: 'They understand the fundamentals but need more depth',
-    },
-    {
-      id: 'doing',
-      title: 'Already doing it',
-      desc: 'They have experience and want advanced strategies',
-    },
-  ]
-
-  return (
-    <section className="page">
-      <div className="page-container">
-        <div className="content-card">
-          <div className="step-indicator mb-6">Step 4 of 4</div>
-          <h2 className="heading-2 mb-6">
-            Where is your audience on this topic?
-          </h2>
-
-          <div className="space-y-4 mb-8">
-            {options.map((o) => (
-              <div
-                key={o.id}
-                className={`selectable-card${level === o.id ? ' selected' : ''}`}
-                onClick={() => setLevel(o.id)}
-              >
-                <div className="selectable-card-header">
-                  <span className="paragraph-semibold">{o.title}</span>
-                </div>
-                <p className="paragraph-small text-slate-600">{o.desc}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="button-group">
-            <button onClick={onBack} className="btn-ghost">
-              Back
-            </button>
-            <button onClick={onNext} className="btn-primary">
-              Generate My Product Concept
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
 /* ===== Page 6 workflow: spinner during /start + /respond, real Q&A in between =====
    Per the doc:
      "Each turn from the model returns status: questioning | complete.
@@ -529,17 +254,11 @@ function Page5({
 function Page6Workflow({
   expertise,
   contentLink,
-  questions,
-  depth,
-  level,
   onComplete,
   onAbort,
 }: {
   expertise: string
   contentLink: string
-  questions: string[]
-  depth: DepthOption
-  level: LevelOption
   onComplete: (sessionId: string, concept: Concept) => void
   onAbort: (msg: string | null) => void
 }) {
@@ -564,13 +283,9 @@ function Page6Workflow({
 
     async function run() {
       try {
-        const cleanQuestions = questions.map((q) => q.trim()).filter(Boolean)
         const ideaParts: string[] = [
           `I help people with: ${expertise.trim()}.`,
-          cleanQuestions.length > 0
-            ? `Top audience questions: ${cleanQuestions.join(' | ')}.`
-            : '',
-        ].filter(Boolean)
+        ]
         if (contentLink.trim()) {
           ideaParts.push(`Reference content: ${contentLink.trim()}.`)
         }
@@ -579,8 +294,6 @@ function Page6Workflow({
         const creator = {
           name: 'Creator',
           background: expertise.trim(),
-          capacity: DEPTH_LABEL[depth],
-          audience: LEVEL_LABEL[level],
         }
 
         const first = await startWorkflow(idea, creator)
@@ -902,18 +615,18 @@ function ClarityBar({ clarity }: { clarity: Clarity }) {
 }
 
 /* ===== Page 7: Concept document — renders real concept + manual/AI edit ===== */
-type ConceptUiMode = 'default' | 'manual' | 'ai'
+type ConceptUiMode = 'default' | 'ai'
 
 function Page7({
   sessionId,
   concept,
   onConceptChange,
-  onStartOver,
+  onSeeFullCourse,
 }: {
   sessionId: string
   concept: Concept
   onConceptChange: (c: Concept) => void
-  onStartOver: () => void
+  onSeeFullCourse: () => void
 }) {
   if (isConceptV2(concept)) {
     return (
@@ -921,7 +634,7 @@ function Page7({
         sessionId={sessionId}
         concept={concept}
         onConceptChange={(c: ConceptV2) => onConceptChange(c as Concept)}
-        onStartOver={onStartOver}
+        onSeeFullCourse={onSeeFullCourse}
       />
     )
   }
@@ -931,7 +644,7 @@ function Page7({
       sessionId={sessionId}
       concept={concept as ConceptLegacy}
       onConceptChange={(c: ConceptLegacy) => onConceptChange(c as Concept)}
-      onStartOver={onStartOver}
+      onSeeFullCourse={onSeeFullCourse}
     />
   )
 }
@@ -940,25 +653,6 @@ function Page7({
    but mapped onto the flat ConceptV2 shape returned by the live backend. ===== */
 
 type V2EditableKey = Exclude<keyof ConceptV2, 'core_features'>
-
-const V2_FIELDS: Array<{
-  key: V2EditableKey
-  label: string
-  multiline: boolean
-}> = [
-  { key: 'name', label: 'Product name', multiline: false },
-  { key: 'tagline', label: 'Tagline', multiline: false },
-  { key: 'one_liner', label: 'One-liner', multiline: true },
-  { key: 'description', label: 'Description', multiline: true },
-  { key: 'target_customer', label: 'Target customer', multiline: true },
-  { key: 'target_user', label: 'Target user', multiline: true },
-  { key: 'problem', label: 'Problem', multiline: true },
-  { key: 'solution', label: 'Solution', multiline: true },
-  { key: 'value_proposition', label: 'Value proposition', multiline: true },
-  { key: 'business_model', label: 'Business model', multiline: true },
-  { key: 'pricing_model', label: 'Pricing model', multiline: true },
-  { key: 'go_to_market', label: 'Go-to-market', multiline: true },
-]
 
 function extractFirstPrice(text: string): string | null {
   const m = /\$\s?\d[\d,]*(?:\s?[-–]\s?\$?\s?\d[\d,]*)?/.exec(text)
@@ -976,12 +670,12 @@ function Page7V2({
   sessionId,
   concept,
   onConceptChange,
-  onStartOver,
+  onSeeFullCourse,
 }: {
   sessionId: string
   concept: ConceptV2
   onConceptChange: (c: ConceptV2) => void
-  onStartOver: () => void
+  onSeeFullCourse: () => void
 }) {
   const [mode, setMode] = useState<ConceptUiMode>('default')
   const [editingField, setEditingField] = useState<V2EditableKey | null>(null)
@@ -1045,18 +739,15 @@ function Page7V2({
 
   function sectionProps(field: V2EditableKey) {
     return {
-      editable: mode === 'manual',
       editing: editingField === field,
-      onClick: () => {
-        if (mode === 'manual') startEdit(field)
-      },
+      onEdit: () => startEdit(field),
     }
   }
 
   function renderEditOverlay(field: V2EditableKey, multiline: boolean) {
     if (editingField !== field) return null
     return (
-      <div className="edit-overlay" onClick={(e) => e.stopPropagation()}>
+      <div className="edit-overlay">
         {multiline ? (
           <textarea
             className="text-input"
@@ -1085,12 +776,6 @@ function Page7V2({
       </div>
     )
   }
-
-  // Only show edit chips for fields the backend actually returned.
-  const presentEditableFields = V2_FIELDS.filter((f) => {
-    const v = concept[f.key]
-    return typeof v === 'string' && v.trim().length > 0
-  })
 
   return (
     <section className="page">
@@ -1223,6 +908,9 @@ function Page7V2({
               </ConceptSectionWrap>
             )}
 
+            {/* G2: Lesson demo video — own full-width row */}
+            <LessonSampleBlock />
+
             {/* H: Go-to-Market */}
             {concept.go_to_market && (
               <ConceptSectionWrap
@@ -1253,23 +941,14 @@ function Page7V2({
           <div className="actions-area">
             {mode === 'default' && (
               <div className="actions-group">
-                <button className="btn-ghost" onClick={onStartOver}>
-                  Start over
-                </button>
                 <button
                   className="btn-ghost"
-                  onClick={() => setMode('manual')}
-                >
-                  Manually edit
-                </button>
-                <button
-                  className="btn-secondary"
                   onClick={() => setMode('ai')}
                 >
                   Edit by AI
                 </button>
                 <button
-                  className="btn-primary"
+                  className="btn-secondary"
                   onClick={() =>
                     alert(
                       'This would start the validation workflow (POST /workflow/:id/demo).',
@@ -1277,6 +956,27 @@ function Page7V2({
                   }
                 >
                   Validate this concept
+                </button>
+                <button
+                  className="btn-primary"
+                  style={{ gap: 6 }}
+                  onClick={onSeeFullCourse}
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  See full course
                 </button>
               </div>
             )}
@@ -1295,42 +995,6 @@ function Page7V2({
             <AIChatPanel onClose={() => setMode('default')} />
           )}
 
-          {mode === 'manual' && (
-            <div className="manual-edit-section">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="paragraph-semibold">Editing mode</h4>
-                <button
-                  className="btn-close"
-                  onClick={() => {
-                    setMode('default')
-                    cancelEdit()
-                  }}
-                >
-                  Done editing
-                </button>
-              </div>
-              <p className="paragraph-small text-slate-600">
-                Click any section above to edit it inline. Saves replace the
-                concept on the server via PATCH.
-              </p>
-              <div
-                className="suggested-prompts"
-                style={{ marginTop: 12 }}
-              >
-                {presentEditableFields.map((f) => (
-                  <button
-                    key={f.key}
-                    className="prompt-chip"
-                    onClick={() => startEdit(f.key)}
-                  >
-                    {f.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <LessonSampleBlock />
         </div>
       </div>
     </section>
@@ -1341,12 +1005,12 @@ function Page7Legacy({
   sessionId,
   concept,
   onConceptChange,
-  onStartOver,
+  onSeeFullCourse,
 }: {
   sessionId: string
   concept: ConceptLegacy
   onConceptChange: (c: ConceptLegacy) => void
-  onStartOver: () => void
+  onSeeFullCourse: () => void
 }) {
   const [mode, setMode] = useState<ConceptUiMode>('default')
   const [editingField, setEditingField] = useState<string | null>(null)
@@ -1409,11 +1073,8 @@ function Page7Legacy({
             {/* B: Suggested Title */}
             <ConceptSectionWrap
               field="title"
-              editable={mode === 'manual'}
               editing={editingField === 'title'}
-              onClick={() => {
-                if (mode === 'manual') startEditField('title', concept.name)
-              }}
+              onEdit={() => startEditField('title', concept.name)}
             >
               <h3 className="heading-4 mb-3">Suggested Product Title</h3>
               <p className="paragraph-lg-semibold text-teal-700">
@@ -1583,12 +1244,8 @@ function Page7Legacy({
             {/* F: Suggested Price Range */}
             <ConceptSectionWrap
               field="pricing"
-              editable={mode === 'manual'}
               editing={editingField === 'pricing'}
-              onClick={() => {
-                if (mode === 'manual')
-                  startEditField('pricing', concept.pricing.strategy)
-              }}
+              onEdit={() => startEditField('pricing', concept.pricing.strategy)}
             >
               <h3 className="heading-4 mb-3">Suggested Price Range</h3>
               {concept.pricing.tiers.length > 0 && (
@@ -1635,29 +1292,23 @@ function Page7Legacy({
                 />
               )}
             </ConceptSectionWrap>
+
+            {/* F2: Lesson demo video — own full-width row */}
+            <LessonSampleBlock />
           </div>
 
           {/* Actions area */}
           <div className="actions-area">
             {mode === 'default' && (
               <div className="actions-group">
-                <button className="btn-ghost" onClick={onStartOver}>
-                  Start over
-                </button>
                 <button
                   className="btn-ghost"
-                  onClick={() => setMode('manual')}
-                >
-                  Manually edit
-                </button>
-                <button
-                  className="btn-secondary"
                   onClick={() => setMode('ai')}
                 >
                   Edit by AI
                 </button>
                 <button
-                  className="btn-primary"
+                  className="btn-secondary"
                   onClick={() =>
                     alert(
                       'This would start the validation workflow (POST /workflow/:id/demo).',
@@ -1665,6 +1316,27 @@ function Page7Legacy({
                   }
                 >
                   Validate this concept
+                </button>
+                <button
+                  className="btn-primary"
+                  style={{ gap: 6 }}
+                  onClick={onSeeFullCourse}
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden
+                  >
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                  </svg>
+                  See full course
                 </button>
               </div>
             )}
@@ -1683,29 +1355,6 @@ function Page7Legacy({
             <AIChatPanel onClose={() => setMode('default')} />
           )}
 
-          {mode === 'manual' && (
-            <div className="manual-edit-section">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="paragraph-semibold">Editing mode</h4>
-                <button
-                  className="btn-close"
-                  onClick={() => {
-                    setMode('default')
-                    cancelEditField()
-                  }}
-                >
-                  Done editing
-                </button>
-              </div>
-              <p className="paragraph-small text-slate-600">
-                Click on the highlighted sections (format, title, pricing,
-                positioning) to edit. Saves replace the concept on the server
-                via PATCH.
-              </p>
-            </div>
-          )}
-
-          <LessonSampleBlock />
         </div>
       </div>
     </section>
@@ -1714,26 +1363,44 @@ function Page7Legacy({
 
 function ConceptSectionWrap({
   field,
-  editable = false,
   editing = false,
-  onClick,
+  onEdit,
   children,
 }: {
   field: string
-  editable?: boolean
   editing?: boolean
-  onClick?: () => void
+  onEdit?: () => void
   children: React.ReactNode
 }) {
-  const cls = [
-    'concept-section',
-    editable ? 'editable' : '',
-    editing ? 'editing' : '',
-  ]
+  const cls = ['concept-section', editing ? 'editing' : '']
     .filter(Boolean)
     .join(' ')
   return (
-    <div className={cls} data-field={field} onClick={onClick}>
+    <div className={cls} data-field={field}>
+      {onEdit && !editing && (
+        <button
+          type="button"
+          className="section-edit-btn"
+          onClick={onEdit}
+          aria-label="Edit section"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+          </svg>
+          Edit
+        </button>
+      )}
       {children}
     </div>
   )
@@ -1779,176 +1446,462 @@ function EditOverlay({
   )
 }
 
-/* ===== Static lesson sample appended at the bottom of Page 7 ===== */
+/* ===== Lesson demo: video player + AI-generation prompt + paywall ===== */
+const LESSON_VIDEO_SRC = '/backend_video.mp4'
+
 function LessonSampleBlock() {
+  const [editing, setEditing] = useState(false)
+  const [prompt, setPrompt] = useState('')
+  const [showPaywall, setShowPaywall] = useState(false)
+
   return (
-    <aside className="lesson-card" aria-label="Sample lesson">
-      <div className="lesson-header">
-        <span className="lesson-title">
-          Lesson 1 — The 30-Day Test: Filtering Ideas Before You Build
-        </span>
-        <span className="lesson-badge">sample</span>
+    <>
+      <aside className="lesson-card" aria-label="Lesson demo video">
+        <div className="lesson-header">
+          <span className="lesson-title">Lesson 1 — Demo</span>
+          <span className="lesson-badge">sample</span>
+        </div>
+
+        <div className="lesson-video-frame">
+          {LESSON_VIDEO_SRC ? (
+            <video
+              className="lesson-video"
+              src={LESSON_VIDEO_SRC}
+              controls
+              preload="metadata"
+            />
+          ) : (
+            <div className="lesson-video-placeholder">
+              <svg
+                width="44"
+                height="44"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="11"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="M10 8.5v7l6-3.5-6-3.5z"
+                  fill="currentColor"
+                />
+              </svg>
+              <span>Video demo</span>
+            </div>
+          )}
+        </div>
+
+        {editing && (
+          <div className="lesson-edit-area">
+            <label className="lesson-edit-label">
+              AI video maker prompt
+            </label>
+            <textarea
+              className="lesson-edit-input"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Describe what the AI should generate for this lesson video…"
+            />
+            <div className="lesson-edit-actions">
+              <button
+                className="btn-ghost-dark"
+                onClick={() => setEditing(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn-primary"
+                onClick={() => setShowPaywall(true)}
+              >
+                Save video content
+              </button>
+            </div>
+          </div>
+        )}
+
+        {!editing && (
+          <div className="lesson-actions">
+            <button
+              className="btn-ghost-dark"
+              onClick={() => setEditing(true)}
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+              </svg>
+              Edit
+            </button>
+          </div>
+        )}
+      </aside>
+
+      {showPaywall && (
+        <PaywallModal onClose={() => setShowPaywall(false)} />
+      )}
+    </>
+  )
+}
+
+/* ===== Page 8: Full course — lesson list with one unlocked demo ===== */
+
+type CourseLessonData = {
+  number: number
+  title: string
+  description: string
+  duration: string
+  locked: boolean
+}
+
+const COURSE_LESSONS: CourseLessonData[] = [
+  {
+    number: 1,
+    title: 'Foundations & first concept brief',
+    description:
+      'Set up your workspace and turn a rough idea into a one-page brief you can build on.',
+    duration: '12 min',
+    locked: false,
+  },
+  {
+    number: 2,
+    title: 'Researching your real audience',
+    description:
+      'Pinpoint who you are building for and the moments where they actually feel the pain.',
+    duration: '18 min',
+    locked: true,
+  },
+  {
+    number: 3,
+    title: 'Pricing, packaging & positioning',
+    description:
+      'Choose a price point and message that line up with how your audience already buys.',
+    duration: '21 min',
+    locked: true,
+  },
+  {
+    number: 4,
+    title: 'Launch, gather signal, iterate',
+    description:
+      'Ship a small first version and use early reactions to decide what to double down on.',
+    duration: '16 min',
+    locked: true,
+  },
+]
+
+function Page8FullCourse({ onBack }: { onBack: () => void }) {
+  const [showPaywall, setShowPaywall] = useState(false)
+
+  return (
+    <section className="page">
+      <div className="page-container-full">
+        <div className="content-card-wide">
+          <div className="course-header mb-8 pb-6 border-b">
+            <button
+              type="button"
+              className="course-back-btn"
+              onClick={onBack}
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="M19 12H5" />
+                <path d="m12 19-7-7 7-7" />
+              </svg>
+              Back to concept
+            </button>
+            <h1 className="heading-2">Full Course</h1>
+            <p
+              className="paragraph text-slate-600"
+              style={{ marginTop: 8 }}
+            >
+              {COURSE_LESSONS.length} lessons · designed around the concept
+              you just built. Lesson 1 is on us — preview it below.
+            </p>
+          </div>
+
+          <div className="course-lessons">
+            {COURSE_LESSONS.map((lesson) => (
+              <CourseLesson
+                key={lesson.number}
+                lesson={lesson}
+                onLockedAction={() => setShowPaywall(true)}
+              />
+            ))}
+          </div>
+
+          <div className="course-cta">
+            <p
+              className="paragraph text-slate-600 text-center"
+            >
+              Ready for the rest? Unlock all {COURSE_LESSONS.length} lessons
+              and editable AI scripts.
+            </p>
+            <button
+              type="button"
+              className="btn-primary course-cta-btn"
+              onClick={() => setShowPaywall(true)}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              Unlock full course
+            </button>
+          </div>
+        </div>
+      </div>
+      {showPaywall && <PaywallModal onClose={() => setShowPaywall(false)} />}
+    </section>
+  )
+}
+
+function CourseLesson({
+  lesson,
+  onLockedAction,
+}: {
+  lesson: CourseLessonData
+  onLockedAction: () => void
+}) {
+  const [editing, setEditing] = useState(false)
+  const [prompt, setPrompt] = useState('')
+
+  function handleEditClick() {
+    if (lesson.locked) {
+      onLockedAction()
+      return
+    }
+    setEditing((v) => !v)
+  }
+
+  return (
+    <article className={`course-lesson${lesson.locked ? ' locked' : ''}`}>
+      <div className="course-lesson-video">
+        {lesson.locked ? (
+          <button
+            type="button"
+            className="course-lesson-locked"
+            onClick={onLockedAction}
+            aria-label={`Unlock lesson ${lesson.number}`}
+          >
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            <span className="course-lesson-locked-label">
+              Locked — unlock to watch
+            </span>
+          </button>
+        ) : (
+          <video
+            className="lesson-video"
+            src={LESSON_VIDEO_SRC}
+            controls
+            preload="metadata"
+          />
+        )}
       </div>
 
-      <div className="lesson-eyebrow">Content</div>
+      <div className="course-lesson-body">
+        <div className="course-lesson-meta">
+          <span className="course-lesson-number">
+            Lesson {lesson.number}
+          </span>
+          <span className="course-lesson-duration">{lesson.duration}</span>
+          {lesson.locked ? (
+            <span className="course-lesson-lock-badge">
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              Locked
+            </span>
+          ) : (
+            <span className="course-lesson-free-badge">Free preview</span>
+          )}
+        </div>
 
-      <div className="lesson-section">
-        <h4>Why most indie SaaS projects die before launch</h4>
-        <p>
-          Three out of four indie SaaS projects never get a single paying
-          customer. Not because the code didn't work — because the founder
-          picked an idea that was too big to ship to their available time, or
-          too vague to know when it was "done."
-        </p>
-        <p>
-          When you've been building for a year and still haven't shown it to
-          anyone, the problem is rarely your skills. It's the wedge.
-        </p>
-        <p>
-          A wedge is the smallest version of your idea that someone would still
-          pay for. Not the version with every feature you're excited about. The
-          version where, if you stripped one more thing, no one would buy it.
-        </p>
-        <p>
-          Most ideas fail the wedge test on day one — but you can't tell,
-          because you haven't asked the right questions yet. That's what this
-          lesson fixes.
-        </p>
-        <p>
-          By the end of today you'll have a wedge candidate written in one
-          sentence, three reasons it might fail, and a clear yes/no on whether
-          it's small enough to ship in 30 days. We're not building anything
-          yet. Filtering bad wedges takes 60 minutes and saves you 6 months.
-        </p>
+        <h3 className="heading-4 course-lesson-title">{lesson.title}</h3>
+        <p className="paragraph text-slate-600">{lesson.description}</p>
+
+        {editing && !lesson.locked && (
+          <div className="course-lesson-edit">
+            <label className="paragraph-small-semibold mb-2 block text-slate-700">
+              AI video maker prompt
+            </label>
+            <textarea
+              className="text-input"
+              style={{ height: 'auto', minHeight: 80 }}
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Describe what the AI should generate for this lesson video…"
+            />
+            <div className="edit-actions">
+              <button
+                type="button"
+                className="btn-ghost"
+                onClick={() => setEditing(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={onLockedAction}
+              >
+                Save video content
+              </button>
+            </div>
+          </div>
+        )}
+
+        <div className="course-lesson-actions">
+          <button
+            type="button"
+            className="course-lesson-edit-btn"
+            onClick={handleEditClick}
+            aria-label={`Edit lesson ${lesson.number}`}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden
+            >
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+            </svg>
+            Edit
+          </button>
+        </div>
       </div>
+    </article>
+  )
+}
 
-      <div className="lesson-section">
-        <h4>The 30-day test</h4>
-        <p>
-          Run your idea through these four questions. Write the answers in
-          plain text — don't open a doc tool, don't fancy it up. A notes app
-          or even paper.
-        </p>
-        <p>
-          1. Who pays? Name a specific person — first name, role, what they
-          do all day. Not "small business owners." Sara, who runs a 4-person
-          dental office and spends Tuesday afternoons fighting with insurance
-          claims.
-        </p>
-        <p>
-          2. What's the trigger? What did Sara just experience that would make
-          her search for your thing? If you can't name a trigger, you don't
-          have a product, you have a vitamin.
-        </p>
-        <p>
-          3. What's the smallest thing that solves it? If you removed half
-          your planned features, what's left? If you removed half of that,
-          what's left? Keep cutting until removing one more thing breaks the
-          value.
-        </p>
-        <p>
-          4. Could you ship that in 30 days, working solo, evenings only? Be
-          honest. If the answer is "maybe with a heroic push" — no. If it's
-          "easily" — your wedge might still be too small, and that's fine. We
-          can prune it. Too-big wedges kill projects. Too-small ones just feel
-          cringe.
-        </p>
-      </div>
-
-      <div className="lesson-section">
-        <h4>A worked example</h4>
-        <p>
-          Let's run through it with a real idea: "a tool that helps freelancers
-          track their time."
-        </p>
-        <p>Sounds reasonable. Now run the test.</p>
-        <p>
-          Who pays? "Freelancers" — too vague. Narrow it: Jamal, a freelance
-          UX designer with 4-6 active clients, who's been burned twice by
-          undercounting hours when invoicing.
-        </p>
-        <p>
-          Trigger? Last Friday Jamal sent an invoice and realized he'd worked
-          11 more hours than he tracked. He's losing $1,200 a month to bad
-          estimates.
-        </p>
-        <p>
-          Smallest thing? Not yet another timer app. Maybe a Friday-evening
-          Slack DM that says "You logged 23 hours this week. Based on past
-          weeks, you probably worked 28-32. Want to add the gap before
-          invoicing?" That's it. No timer. No dashboard. One nudge.
-        </p>
-        <p>
-          30 days, solo, evenings only? The Slack bot is doable. The
-          estimation logic needs at least 2 weeks of historical data per user,
-          which means onboarding has to feel useful before that data exists.
-          Either ship without estimation (just the friction-free logging
-          nudge), or pre-fill from the user's calendar. Both are smaller than
-          building a full timer app. Both can ship in 30 days.
-        </p>
-      </div>
-
-      <div className="lesson-section">
-        <h4>Your turn</h4>
-        <p>
-          Pick your idea. Run the four questions on it right now — before this
-          lesson is over. Set a 30-minute timer.
-        </p>
-        <p>
-          Do not skip Question 1. "Small business owners," "creators,"
-          "developers" all fail. You need a name and a Tuesday afternoon.
-        </p>
-        <p>
-          Do not skip Question 4 either. The honesty question is where most
-          people lie to themselves. "I can totally do it in 30 days" is the
-          same energy as "I'll only have one drink."
-        </p>
-        <p>
-          When you finish, you'll have one of three results: Pass — congrats,
-          you've got a wedge, and tomorrow's lesson is the 5-conversation
-          validation sprint. Too big — narrow it: cut a feature, cut a
-          customer segment, cut the timeline ambition. Too vague — go back to
-          Question 1. The fix is almost always "I can't actually name who this
-          is for."
-        </p>
-        <p>
-          Drop your wedge in the cohort Discord (or your notes app) before
-          you log off.
-        </p>
-      </div>
-
-      <div className="lesson-eyebrow">Key takeaways</div>
-      <ul className="lesson-list">
-        <li>
-          A wedge is the smallest version someone would still pay for — not a
-          feature-complete v1.
-        </li>
-        <li>
-          If you can't name a specific person who pays, you don't have a wedge
-          yet.
-        </li>
-        <li>
-          Triggers, not pain points, are what make people search for the thing.
-        </li>
-        <li>
-          If 30 days, solo, evenings only feels heroic, your scope is wrong.
-        </li>
-        <li>Bad wedges kill projects. Filtering takes 60 minutes.</li>
-      </ul>
-
-      <div className="lesson-eyebrow">What's next</div>
-      <p
-        style={{
-          fontSize: '14.5px',
-          lineHeight: 1.65,
-          color: '#cfcfc9',
-        }}
+function PaywallModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div
+      className="paywall-overlay"
+      role="dialog"
+      aria-modal="true"
+      onClick={onClose}
+    >
+      <div
+        className="paywall-modal"
+        onClick={(e) => e.stopPropagation()}
       >
-        Tomorrow: the 5-conversation validation sprint. You'll talk to 5
-        people who match your wedge and learn whether the trigger is real —
-        without writing a single line of code.
-      </p>
-    </aside>
+        <button
+          className="paywall-close"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+        <div className="paywall-icon">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+        </div>
+
+        <h3 className="heading-3 paywall-title">Unlock the full course</h3>
+        <p className="paragraph paywall-sub">
+          Generate AI lesson videos and access the complete curriculum.
+        </p>
+
+        <div className="paywall-price">
+          <span className="paywall-price-amount">$49</span>
+          <span className="paywall-price-period">one-time</span>
+        </div>
+
+        <ul className="boundary-list paywall-features">
+          <li>Unlimited AI-generated lesson videos</li>
+          <li>Full course access — every lesson, every module</li>
+          <li>Editable scripts and prompts</li>
+        </ul>
+
+        <div className="paywall-actions">
+          <button className="btn-ghost" onClick={onClose}>
+            Maybe later
+          </button>
+          <button
+            className="btn-primary"
+            onClick={() => alert('Stripe checkout would open here.')}
+          >
+            Pay $49 & unlock
+          </button>
+        </div>
+      </div>
+    </div>
   )
 }
 
