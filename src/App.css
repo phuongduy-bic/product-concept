@@ -701,3 +701,101 @@
     width: 100%;
   }
 }
+
+/* ===================================
+   Lesson sample block (dark card appended after concept)
+   =================================== */
+
+.lesson-card {
+  margin-top: var(--spacing-2xl);
+  background: #1c1f24;
+  color: #e6e6e3;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2xl);
+  border: 1px solid #2a2e34;
+}
+
+.lesson-card .lesson-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
+}
+
+.lesson-card .lesson-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.5px;
+  color: #f5f5f0;
+}
+
+.lesson-card .lesson-badge {
+  display: inline-block;
+  background: #c4f47a;
+  color: #1c1f24;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: lowercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.lesson-card .lesson-eyebrow {
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #8a8f97;
+  margin: 24px 0 10px;
+  font-weight: 600;
+}
+
+.lesson-card .lesson-section {
+  margin-bottom: 24px;
+}
+
+.lesson-card .lesson-section h4 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: #f5f5f0;
+  margin-bottom: 12px;
+  letter-spacing: -0.3px;
+}
+
+.lesson-card .lesson-section p {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: #cfcfc9;
+  margin-bottom: 12px;
+}
+
+.lesson-card .lesson-section p:last-child {
+  margin-bottom: 0;
+}
+
+.lesson-card .lesson-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.lesson-card .lesson-list li {
+  position: relative;
+  padding-left: 18px;
+  margin-bottom: 8px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #cfcfc9;
+}
+
+.lesson-card .lesson-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #c4f47a;
+  font-weight: bold;
+}
+

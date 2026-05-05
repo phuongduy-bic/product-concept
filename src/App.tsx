@@ -915,10 +915,6 @@ function Page7({
   onConceptChange: (c: Concept) => void
   onStartOver: () => void
 }) {
-  // The deployed backend now returns a flat schema (ConceptV2) — render
-  // a layout that mirrors the original HTML repo's Page 7 against those
-  // fields. The legacy code below stays intact for older sessions whose
-  // concept matches the doc's nested shape.
   if (isConceptV2(concept)) {
     return (
       <Page7V2
@@ -1333,6 +1329,8 @@ function Page7V2({
               </div>
             </div>
           )}
+
+          <LessonSampleBlock />
         </div>
       </div>
     </section>
@@ -1399,8 +1397,6 @@ function Page7Legacy({
     }
   }
 
-  const recommendedFormat = concept.productOutline[0]?.section ?? 'Concept'
-
   return (
     <section className="page">
       <div className="page-container-full">
@@ -1410,32 +1406,6 @@ function Page7Legacy({
           </div>
 
           <div className="space-y-6">
-            {/* A: Recommended Format / Summary */}
-            <ConceptSectionWrap
-              field="format"
-              editable={mode === 'manual'}
-              editing={editingField === 'format'}
-              onClick={() => {
-                if (mode === 'manual')
-                  startEditField('format', concept.summary)
-              }}
-            >
-              <div className="flex items-start gap-3 mb-4">
-                <span className="badge-teal">Recommended</span>
-                <h3 className="heading-3">{recommendedFormat}</h3>
-              </div>
-              <p className="paragraph">{concept.summary}</p>
-              {editingField === 'format' && (
-                <EditOverlay
-                  draft={draft}
-                  setDraft={setDraft}
-                  saving={saving}
-                  onSave={saveEditField}
-                  onCancel={cancelEditField}
-                />
-              )}
-            </ConceptSectionWrap>
-
             {/* B: Suggested Title */}
             <ConceptSectionWrap
               field="title"
@@ -1734,6 +1704,8 @@ function Page7Legacy({
               </p>
             </div>
           )}
+
+          <LessonSampleBlock />
         </div>
       </div>
     </section>
@@ -1804,6 +1776,179 @@ function EditOverlay({
         </button>
       </div>
     </div>
+  )
+}
+
+/* ===== Static lesson sample appended at the bottom of Page 7 ===== */
+function LessonSampleBlock() {
+  return (
+    <aside className="lesson-card" aria-label="Sample lesson">
+      <div className="lesson-header">
+        <span className="lesson-title">
+          Lesson 1 — The 30-Day Test: Filtering Ideas Before You Build
+        </span>
+        <span className="lesson-badge">sample</span>
+      </div>
+
+      <div className="lesson-eyebrow">Content</div>
+
+      <div className="lesson-section">
+        <h4>Why most indie SaaS projects die before launch</h4>
+        <p>
+          Three out of four indie SaaS projects never get a single paying
+          customer. Not because the code didn't work — because the founder
+          picked an idea that was too big to ship to their available time, or
+          too vague to know when it was "done."
+        </p>
+        <p>
+          When you've been building for a year and still haven't shown it to
+          anyone, the problem is rarely your skills. It's the wedge.
+        </p>
+        <p>
+          A wedge is the smallest version of your idea that someone would still
+          pay for. Not the version with every feature you're excited about. The
+          version where, if you stripped one more thing, no one would buy it.
+        </p>
+        <p>
+          Most ideas fail the wedge test on day one — but you can't tell,
+          because you haven't asked the right questions yet. That's what this
+          lesson fixes.
+        </p>
+        <p>
+          By the end of today you'll have a wedge candidate written in one
+          sentence, three reasons it might fail, and a clear yes/no on whether
+          it's small enough to ship in 30 days. We're not building anything
+          yet. Filtering bad wedges takes 60 minutes and saves you 6 months.
+        </p>
+      </div>
+
+      <div className="lesson-section">
+        <h4>The 30-day test</h4>
+        <p>
+          Run your idea through these four questions. Write the answers in
+          plain text — don't open a doc tool, don't fancy it up. A notes app
+          or even paper.
+        </p>
+        <p>
+          1. Who pays? Name a specific person — first name, role, what they
+          do all day. Not "small business owners." Sara, who runs a 4-person
+          dental office and spends Tuesday afternoons fighting with insurance
+          claims.
+        </p>
+        <p>
+          2. What's the trigger? What did Sara just experience that would make
+          her search for your thing? If you can't name a trigger, you don't
+          have a product, you have a vitamin.
+        </p>
+        <p>
+          3. What's the smallest thing that solves it? If you removed half
+          your planned features, what's left? If you removed half of that,
+          what's left? Keep cutting until removing one more thing breaks the
+          value.
+        </p>
+        <p>
+          4. Could you ship that in 30 days, working solo, evenings only? Be
+          honest. If the answer is "maybe with a heroic push" — no. If it's
+          "easily" — your wedge might still be too small, and that's fine. We
+          can prune it. Too-big wedges kill projects. Too-small ones just feel
+          cringe.
+        </p>
+      </div>
+
+      <div className="lesson-section">
+        <h4>A worked example</h4>
+        <p>
+          Let's run through it with a real idea: "a tool that helps freelancers
+          track their time."
+        </p>
+        <p>Sounds reasonable. Now run the test.</p>
+        <p>
+          Who pays? "Freelancers" — too vague. Narrow it: Jamal, a freelance
+          UX designer with 4-6 active clients, who's been burned twice by
+          undercounting hours when invoicing.
+        </p>
+        <p>
+          Trigger? Last Friday Jamal sent an invoice and realized he'd worked
+          11 more hours than he tracked. He's losing $1,200 a month to bad
+          estimates.
+        </p>
+        <p>
+          Smallest thing? Not yet another timer app. Maybe a Friday-evening
+          Slack DM that says "You logged 23 hours this week. Based on past
+          weeks, you probably worked 28-32. Want to add the gap before
+          invoicing?" That's it. No timer. No dashboard. One nudge.
+        </p>
+        <p>
+          30 days, solo, evenings only? The Slack bot is doable. The
+          estimation logic needs at least 2 weeks of historical data per user,
+          which means onboarding has to feel useful before that data exists.
+          Either ship without estimation (just the friction-free logging
+          nudge), or pre-fill from the user's calendar. Both are smaller than
+          building a full timer app. Both can ship in 30 days.
+        </p>
+      </div>
+
+      <div className="lesson-section">
+        <h4>Your turn</h4>
+        <p>
+          Pick your idea. Run the four questions on it right now — before this
+          lesson is over. Set a 30-minute timer.
+        </p>
+        <p>
+          Do not skip Question 1. "Small business owners," "creators,"
+          "developers" all fail. You need a name and a Tuesday afternoon.
+        </p>
+        <p>
+          Do not skip Question 4 either. The honesty question is where most
+          people lie to themselves. "I can totally do it in 30 days" is the
+          same energy as "I'll only have one drink."
+        </p>
+        <p>
+          When you finish, you'll have one of three results: Pass — congrats,
+          you've got a wedge, and tomorrow's lesson is the 5-conversation
+          validation sprint. Too big — narrow it: cut a feature, cut a
+          customer segment, cut the timeline ambition. Too vague — go back to
+          Question 1. The fix is almost always "I can't actually name who this
+          is for."
+        </p>
+        <p>
+          Drop your wedge in the cohort Discord (or your notes app) before
+          you log off.
+        </p>
+      </div>
+
+      <div className="lesson-eyebrow">Key takeaways</div>
+      <ul className="lesson-list">
+        <li>
+          A wedge is the smallest version someone would still pay for — not a
+          feature-complete v1.
+        </li>
+        <li>
+          If you can't name a specific person who pays, you don't have a wedge
+          yet.
+        </li>
+        <li>
+          Triggers, not pain points, are what make people search for the thing.
+        </li>
+        <li>
+          If 30 days, solo, evenings only feels heroic, your scope is wrong.
+        </li>
+        <li>Bad wedges kill projects. Filtering takes 60 minutes.</li>
+      </ul>
+
+      <div className="lesson-eyebrow">What's next</div>
+      <p
+        style={{
+          fontSize: '14.5px',
+          lineHeight: 1.65,
+          color: '#cfcfc9',
+        }}
+      >
+        Tomorrow: the 5-conversation validation sprint. You'll talk to 5
+        people who match your wedge and learn whether the trigger is real —
+        without writing a single line of code.
+      </p>
+    </aside>
   )
 }
 
