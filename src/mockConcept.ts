@@ -4,125 +4,130 @@ import type { ConceptLegacy, Demo } from './api'
 // used by the "Skip to result" button on the welcome page so the final
 // layout can be reviewed without running the full Q&A.
 export const MOCK_LEGACY_CONCEPT: ConceptLegacy = {
-  name: 'Instagram Business Kickstart: From Setup to Your First Followers',
+  name: 'Backend Course 2026: From Zero to Production-Ready APIs',
   tagline:
-    'A focused mini-course that takes a small business from a blank Instagram account to a thriving profile.',
+    'A hands-on bootcamp that takes a junior developer from "I know a language" to shipping reliable backend services in production.',
   summary:
-    'Based on your expertise depth and audience level, a mini-course is the ideal format. It provides enough structure for beginners without overwhelming them, and can be completed in a focused learning session. This format has high perceived value while being achievable to create.',
+    'Based on your expertise depth and audience level, a structured cohort-based course is the ideal format. It provides enough rigor for serious learners while staying achievable in a focused term, and pairs theory with weekly shippable projects. This format has high perceived value because the modern backend stack changes fast and self-taught developers struggle to know what to learn next in 2026.',
   productOutline: [
     {
-      section: 'Lesson 1',
-      title: 'Business Profile Setup',
+      section: 'Module 1',
+      title: 'HTTP, REST, and the Request Lifecycle',
       description:
-        'Converting to business account, choosing category, completing profile sections',
-      outputs: ['"How do I set up..."'],
+        'How requests actually travel, status codes that matter, idempotency, and designing predictable endpoints',
+      outputs: ['"What happens between curl and my handler?"'],
     },
     {
-      section: 'Lesson 2',
-      title: 'Profile Optimization',
+      section: 'Module 2',
+      title: 'Databases and Data Modeling',
       description:
-        'Bio writing, link strategy, highlights setup, profile photo guidelines',
-      outputs: ['"How do people find me..."'],
+        'Relational fundamentals, indexes, transactions, N+1 traps, and when to reach for Postgres vs. key-value stores',
+      outputs: ['"Why is my query slow?"'],
     },
     {
-      section: 'Lesson 3',
-      title: 'Content Strategy Basics',
+      section: 'Module 3',
+      title: 'Authentication and Authorization',
       description:
-        'Content pillars, post types that work, posting frequency fundamentals',
-      outputs: ['"What should I post..."'],
+        'Sessions vs. JWTs, OAuth flows, password hashing, RBAC, and the failure modes that cause breaches',
+      outputs: ['"How do I keep this secure?"'],
     },
     {
-      section: 'Lesson 4',
-      title: 'Your First 30 Days',
-      description: 'Simple content calendar, engagement tactics, hashtag basics',
-      outputs: ['"...to get followers"'],
+      section: 'Module 4',
+      title: 'Background Jobs and Async Work',
+      description:
+        'Queues, workers, retries, idempotent handlers, and choosing between cron, queues, and event streams',
+      outputs: ['"...without blocking the request"'],
     },
     {
-      section: 'Lesson 5',
-      title: 'Simple Growth Tactics',
+      section: 'Module 5',
+      title: 'Observability and Shipping to Production',
       description:
-        'Community engagement, collaborations, measuring what works',
-      outputs: ['Foundational growth'],
+        'Structured logs, metrics, tracing, on-call basics, deploys, and the runbook for your first 3 a.m. page',
+      outputs: ['Production-ready confidence'],
     },
   ],
   deliverables: [
-    '5 video lessons (10-15 min each)',
-    'PDF templates for each lesson',
-    '2-3 weeks creation time, part-time',
-    'Private resource library with swipe files',
-    'One bonus office-hours call',
-    'Lifetime updates as Instagram changes',
+    '5 module workshops (90 min each, recorded)',
+    'Weekly shippable project (build a real API end-to-end)',
+    '8-week cohort, ~6 hrs/week part-time',
+    'Private GitHub org with reference implementations',
+    'Two live code-review sessions with the instructor',
+    'Lifetime updates as the stack evolves into 2027',
   ],
   marketing: {
     marketSize:
-      '$1.2B globally in 2024 for small-business social-media education (Statista proxy).',
+      '$5.8B globally in 2025 for developer education and bootcamps, with backend-focused programs the fastest-growing segment (HolonIQ proxy).',
     marketGap:
-      'Beginners want a single, structured starter path — not generic advice scattered across YouTube and TikTok.',
+      'Junior devs in 2026 know how to prompt an LLM to write a handler, but cannot debug a slow query or design an idempotent job. Existing courses still teach 2019 patterns.',
     trends: [
-      'Short-form video continues to dominate discovery on Instagram',
-      'Small businesses increasingly demand "done-with-you" rather than "done-for-you"',
-      'Buyers prefer mini-courses (~$29-49) over high-ticket cohorts',
+      'AI-generated code raises the bar on what "junior" means — depth in fundamentals is now the differentiator',
+      'Postgres + a queue + a small service has decisively beaten microservices for early-stage teams',
+      'Buyers prefer outcome-based cohorts (~$499-899) over passive video libraries',
     ],
     competitors: [
       {
-        name: 'Later Academy',
-        pricing: 'Free + paid tiers',
-        positioning: 'Big-brand authority for scheduling-led content',
+        name: 'Boot.dev',
+        pricing: '$30/month',
+        positioning: 'Self-paced gamified backend curriculum, very broad',
       },
       {
-        name: 'Jenna Kutcher mini-courses',
-        pricing: '$49-99',
-        positioning: 'Influencer-led, lifestyle-flavored fundamentals',
+        name: 'Educative Backend Path',
+        pricing: '$59-99/month',
+        positioning: 'Text-based interactive lessons, strong on system design',
       },
     ],
     positioning:
-      'The shortest path from "blank profile" to "first 100 customers via Instagram" for a non-marketer small-business owner.',
+      'The shortest path from "I can write a handler" to "I can run a service in production" for a working junior dev in the AI-assisted coding era.',
     channels: [
-      'Instagram itself (build-in-public)',
-      'Small-business newsletters and Slack groups',
-      'Local chamber-of-commerce partnerships',
+      'Developer newsletters (Bytes, TLDR, Pragmatic Engineer)',
+      'Hacker News and r/ExperiencedDevs build-in-public posts',
+      'Conference workshops and meetup partnerships',
     ],
     keyMessages: [
-      'Advanced Instagram ads or paid promotion strategies',
-      'Reels editing or video production techniques',
-      'Complex analytics and reporting tools',
-      'Influencer outreach or partnership negotiation',
-      'E-commerce integration or Instagram Shopping setup',
+      'Frontend frameworks, CSS, or UI work',
+      'Mobile development or native app concerns',
+      'Heavy ML training pipelines or model serving internals',
+      'Kubernetes administration or SRE-level infra deep-dives',
+      'Language-specific syntax for absolute beginners',
     ],
     contentIdeas: [
-      'Behind-the-scenes building of the course',
-      'Live "profile teardowns" as social posts',
-      'Founder lessons-learned threads',
+      'Live debugging sessions on real slow queries',
+      '"What junior devs miss in 2026" thread series',
+      'Architecture teardowns of well-known small SaaS backends',
     ],
     partnerships: [
-      'Local small-business networks',
-      'Bookkeeping or web-design freelancers who serve the same ICP',
+      'Junior-friendly hiring platforms (Otta, Hatchways)',
+      'Postgres tooling vendors (Neon, Supabase) for joint workshops',
     ],
     launchSequence: [
-      'Tease the course on Instagram for 2 weeks',
-      'Open early-bird pricing for 7 days',
-      'Public launch with a partner cross-promo',
+      'Pre-launch the curriculum on a personal newsletter for 3 weeks',
+      'Open early-bird pricing for 10 days with a cohort cap',
+      'Public launch with a partner cross-promo and a free Module 1 sample',
     ],
   },
   pricing: {
     tiers: [
       {
-        name: 'one-time payment',
-        price: '$29-49',
-        includes: ['All 5 lessons', 'PDF templates', 'Lifetime updates'],
+        name: 'self-paced',
+        price: '$299-399',
+        includes: ['All 5 modules', 'Weekly project briefs', 'Lifetime updates'],
         anchorRationale:
-          'Affordable for beginners while signaling structured value over free YouTube content.',
+          'Affordable for self-funding juniors while signaling structured value over scattered free tutorials.',
       },
       {
-        name: 'with office hours',
-        price: '$129',
-        includes: ['Everything in base', '1 group office-hours call'],
+        name: 'cohort with reviews',
+        price: '$899',
+        includes: [
+          'Everything in self-paced',
+          'Live cohort sessions',
+          'Two 1:1 code reviews with the instructor',
+        ],
         anchorRationale:
-          'Anchors the entry tier and captures buyers who want a small accountability nudge.',
+          'Anchors the entry tier and captures buyers whose employers will reimburse a structured cohort with feedback.',
       },
     ],
     strategy:
-      'This price range balances affordability for beginners with the value of structured learning. Mini-courses at this price point typically convert well for audiences starting from scratch.',
+      'This price range balances accessibility for self-funding juniors with the value of accountability and feedback. Cohort-based dev courses at this price typically convert well when the curriculum is anchored to shippable outcomes.',
   },
 }
 
@@ -130,35 +135,35 @@ export const MOCK_LEGACY_CONCEPT: ConceptLegacy = {
 // schema. Used by the "Skip to result" button so the lesson page can be
 // reviewed without running an actual generation.
 export const MOCK_DEMO: Demo = {
-  title: 'The 30-Day Test: Filtering Ideas Before You Build',
+  title: 'The Request Lifecycle: What Actually Happens Between curl and Your Handler',
   sections: [
     {
-      heading: 'Why most indie SaaS projects die before launch',
-      body: 'Three out of four indie SaaS projects never get a single paying customer. Not because the code didn\'t work — because the founder picked an idea that was too big to ship to their available time, or too vague to know when it was "done."\n\nWhen you\'ve been building for a year and still haven\'t shown it to anyone, the problem is rarely your skills. It\'s the wedge.\n\nA wedge is the smallest version of your idea that someone would still pay for. Not the version with every feature you\'re excited about. The version where, if you stripped one more thing, no one would buy it.\n\nMost ideas fail the wedge test on day one — but you can\'t tell, because you haven\'t asked the right questions yet. That\'s what this lesson fixes.\n\nBy the end of today you\'ll have a wedge candidate written in one sentence, three reasons it might fail, and a clear yes/no on whether it\'s small enough to ship in 30 days. We\'re not building anything yet. Filtering bad wedges takes 60 minutes and saves you 6 months.',
+      heading: 'Why most junior backend devs ship subtly broken APIs',
+      body: 'Three out of four junior backend developers can write a working handler on day one. Far fewer can explain what happens between the client typing a URL and their function running. That gap is where most production bugs live.\n\nWhen your endpoint "works on my machine" but times out in staging, the problem is rarely your business logic. It\'s a layer you never thought about — DNS, a load balancer, a connection pool, a middleware that swallowed the error.\n\nA mental model of the request lifecycle is the smallest version of "backend knowledge" that prevents the most common production incidents. Not the version with every protocol detail. The version where, if you stripped one more layer, you\'d miss the bug.\n\nMost junior devs in 2026 skip this because an LLM will write the handler for them — but the LLM cannot tell you why your p99 latency just doubled. That\'s what this lesson fixes.\n\nBy the end of today you\'ll be able to draw the eight stops a request makes, name the failure mode at each one, and identify which layer is responsible the next time something is slow. We\'re not writing code yet. The mental model takes 60 minutes and saves you years of confused debugging.',
     },
     {
-      heading: 'The 30-day test',
-      body: 'Run your idea through these four questions. Write the answers in plain text — don\'t open a doc tool, don\'t fancy it up. A notes app or even paper.\n\n1. Who pays? Name a specific person — first name, role, what they do all day. Not "small business owners." Sara, who runs a 4-person dental office and spends Tuesday afternoons fighting with insurance claims.\n\n2. What\'s the trigger? What did Sara just experience that would make her search for your thing? If you can\'t name a trigger, you don\'t have a product, you have a vitamin.\n\n3. What\'s the smallest thing that solves it? If you removed half your planned features, what\'s left? If you removed half of that, what\'s left? Keep cutting until removing one more thing breaks the value.\n\n4. Could you ship that in 30 days, working solo, evenings only? Be honest. If the answer is "maybe with a heroic push" — no. If it\'s "easily" — your wedge might still be too small, and that\'s fine. We can prune it. Too-big wedges kill projects. Too-small ones just feel cringe.',
+      heading: 'The eight stops of a request',
+      body: 'Run any incoming HTTP request through these eight layers. Sketch them on paper — do not open a diagram tool, do not fancy it up.\n\n1. DNS resolution. The client turns api.yourapp.com into an IP. Failure mode: stale cache, expired record, geo-routing mistake.\n\n2. TCP + TLS handshake. The client opens a connection and negotiates encryption. Failure mode: expired certificate, clock skew, slow handshake under load.\n\n3. Load balancer. The request hits your edge — an ALB, a CDN, an Nginx box. Failure mode: timeout misconfigured, sticky sessions wrong, health check too aggressive.\n\n4. Application server. Your runtime accepts the connection from a worker pool. Failure mode: pool exhausted, slow startup, head-of-line blocking on a single thread.\n\n5. Middleware chain. Auth, logging, rate limiting, body parsing run in order. Failure mode: middleware swallows an error, runs on every request when it should be conditional, or mutates state that later middleware depends on.\n\n6. Router and handler. Your function finally runs. Failure mode: this is where you usually look — and usually not where the bug is.\n\n7. Downstream calls. Database, cache, queue, third-party API. Failure mode: N+1 query, missing index, no timeout, no retry budget.\n\n8. Response serialization and return. Bytes go back through the same layers. Failure mode: large payload, missed gzip, leaked internal field.',
     },
     {
       heading: 'A worked example',
-      body: 'Let\'s run through it with a real idea: "a tool that helps freelancers track their time."\n\nSounds reasonable. Now run the test.\n\nWho pays? "Freelancers" — too vague. Narrow it: Jamal, a freelance UX designer with 4-6 active clients, who\'s been burned twice by undercounting hours when invoicing.\n\nTrigger? Last Friday Jamal sent an invoice and realized he\'d worked 11 more hours than he tracked. He\'s losing $1,200 a month to bad estimates.\n\nSmallest thing? Not yet another timer app. Maybe: a Friday-evening Slack DM that says "You logged 23 hours this week. Based on past weeks, you probably worked 28-32. Want to add the gap before invoicing?" That\'s it. No timer. No dashboard. One nudge.\n\n30 days, solo, evenings only? The Slack bot is doable. The estimation logic (based on past weeks?) needs at least 2 weeks of historical data per user, which means onboarding has to feel useful before that data exists. So either ship without estimation (just the friction-free logging nudge) or pre-fill from the user\'s calendar. Both are smaller than building a full timer app. Both can ship in 30 days.',
+      body: 'Let\'s run through it with a real symptom: "GET /orders/:id is slow in production but fast locally."\n\nSounds like a query problem. Now run the eight-stop test before you change anything.\n\nDNS? Same domain hit by your monitoring — fine. TLS? Cert valid, no handshake spike in metrics — fine. Load balancer? p99 timeout is 30s, you\'re returning in 4s, so not a timeout. But the LB metric shows 80% of requests are queueing for >2s before reaching your app.\n\nApplication server? Worker pool size is 4. Your service takes 3s per /orders/:id call. Math: 4 workers × 3s = ~1.3 RPS sustained before queueing. Production traffic is 5 RPS. Found it.\n\nNow look at why one call takes 3s. Middleware? Auth middleware is fetching the user from the database on every request — no cache. Handler? Runs a single query. Downstream? That single query joins five tables and the orders table grew past the index that covered it.\n\nFix order: add the index (1 minute, biggest win), cache the auth lookup (1 hour, second biggest win), then think about pool size. The naive fix — bumping the worker pool — would hide the real problems and burn money.\n\nThe lesson: the bug was in three layers, not one. Without the eight-stop model you would have rewritten the handler, blamed the ORM, and shipped nothing useful.',
     },
     {
       heading: 'Your turn',
-      body: 'Pick your idea. Run the four questions on it right now — before this lesson is over. Set a 30-minute timer.\n\nDo not skip Question 1. "Small business owners," "creators," "developers" all fail. You need a name and a Tuesday afternoon.\n\nDo not skip Question 4 either. The honesty question is where most people lie to themselves. "I can totally do it in 30 days" is the same energy as "I\'ll only have one drink."\n\nWhen you finish, you\'ll have one of three results: Pass — congrats, you\'ve got a wedge, and tomorrow\'s lesson is the 5-conversation validation sprint. Too big — narrow it: cut a feature, cut a customer segment, cut the timeline ambition. Too vague — go back to Question 1. The fix is almost always "I can\'t actually name who this is for."\n\nDrop your wedge in the cohort Discord (or your notes app) before you log off.',
+      body: 'Pick an endpoint in your current project. Walk it through all eight stops right now — before this lesson is over. Set a 30-minute timer.\n\nDo not skip Stop 5. Middleware is where junior devs lose the most time, because they never wrote it and assume it is correct.\n\nDo not skip Stop 7 either. "It\'s just a query" is the same energy as "it\'s just a small change." Every downstream call needs a timeout, a retry policy, and an answer to "what happens if this is slow?"\n\nWhen you finish, you\'ll have one of three results: Confident — you can name the failure mode at every stop, and tomorrow\'s lesson on idempotency will land. Gaps — write down the stops where you said "I don\'t know" and we\'ll cover them in office hours. Lost — go back to Stop 1 and use the worked example as a template.\n\nDrop your sketch in the cohort Discord (or commit it to your notes repo) before you log off.',
     },
   ],
   keyTakeaways: [
-    "A wedge is the smallest version someone would still pay for — not a feature-complete v1.",
-    "If you can't name a specific person who pays, you don't have a wedge yet.",
-    'Triggers, not pain points, are what make people search for the thing.',
-    "If 30 days, solo, evenings only feels heroic, your scope is wrong.",
-    'Bad wedges kill projects. Filtering takes 60 minutes.',
+    'A request passes through eight layers — bugs live between them, not inside your handler.',
+    'If you cannot name the failure mode at each stop, you cannot debug production.',
+    'Worker pool math (RPS × latency vs. pool size) explains most "slow in prod, fast locally" mysteries.',
+    'Every downstream call needs a timeout and an answer to "what if this is slow?" — no exceptions.',
+    'The eight-stop model takes 60 minutes to learn and prevents years of misdirected fixes.',
   ],
   nextPreview:
-    "Tomorrow: the 5-conversation validation sprint. You'll talk to 5 people who match your wedge and learn whether the trigger is real — without writing a single line of code.",
+    'Tomorrow: idempotency and retries. You will learn why "just retry the request" is a foot-gun and how to design handlers that survive being called twice — without writing a single line of business logic.',
   reasoning:
-    'Drafted as Lesson 1 of the mini-course; sets up the wedge framework that the rest of the lessons depend on.',
+    'Drafted as Module 1, Lesson 1 of the cohort; sets up the request-lifecycle mental model that every later module (databases, auth, jobs, observability) reaches back to.',
   generatedAt: new Date().toISOString(),
 }
